@@ -1,0 +1,85 @@
+Sub Stock_Market()
+
+Dim Ticker_Symbol As String
+Dim Vol_Total As String
+Dim Summary_Table_Row As Integer
+Dim Open_Price As Double
+Dim Closing_Price As Double
+Dim Yearly_Change As Double
+Dim Percent_Change As Double
+
+
+
+Cells(1, 9).Value = "Ticker"
+Cells(1, 10).Value = "Yearly Change"
+Cells(1, 11) = "Percent Change"
+Cells(1, 12).Value = "Total Stock Volume"
+
+Vol_Total = 0
+Summary_Table_Row = 2
+Open_Price = 0
+Closing_Price = 0
+Yearly_Change = 0
+Percent_Change = 0
+LastRow = Cells(Rows.Count, 1).End(xlUp).Row
+
+    Open_Price = Cells(2, 3).Value
+
+    For i = 2 To LastRow
+
+        If Cells(i + 1, 1).Value <> Cells(i, 1).Value Then
+
+            Ticker_Symbol = Cells(i, 1).Value
+                     
+            Closing_Price = Cells(i, 6).Value
+             
+            Yearly_Change = Closing_Price - Open_Price
+            
+            Percent_Change = (Yearly_Change / Open_Price) * 100
+
+            Vol_Total = Vol_Total + Cells(i, 7).Value
+            
+            Range("I" & Summary_Table_Row).Value = Ticker_Symbol
+            
+            Range("j" & Summary_Table_Row).Value = Yearly_Change
+            
+            Range("k" & Summary_Table_Row).Value = Percent_Change
+       
+            Range("L" & Summary_Table_Row).Value = Vol_Total
+
+            Summary_Table_Row = Summary_Table_Row + 1
+            
+            Vol_Total = 0
+                       
+        Else
+        
+            Vol_Total = Vol_Total + Cells(i, 7).Value
+              
+        End If
+        
+    Next i
+                        
+
+End Sub
+            
+
+Sub Conditional_Formatting()
+
+Dim Yearly_Change As Double
+
+    For i = 2 To LastRow
+
+        If (Price_Change > 0) Then
+            
+            Range("J" & Summary_Table_Row).Interior.ColorIndex = 4
+            
+        ElseIf (Price_Change < 0) Then
+            
+            Range("J" & Summary_Table_Row).Interior.ColorIndex = 3
+            
+        End If
+        
+    Next i
+        
+        
+End Sub
